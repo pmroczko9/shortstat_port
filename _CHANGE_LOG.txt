@@ -1,0 +1,65 @@
+*********************************************************************************
+ShortStat : Short but Sweet
+
+v0.36b
+
+Created: 	04.03.04
+Updated:	04.11.16
+ 
+By:			Shaun Inman
+ 			http://www.shauninman.com/
+
+
+*********************************************************************************
+Change Log
+.................................................................................
+
+v0.36b | 05.01.20
+- Updated all external links to include `rel="nofollow"` per:
+  http://www.sixapart.com/log/2005/01/support_for_nof.shtml
+
+v0.35b | 04.11.16
+- combined v0.3b and v0.34b into a stand-alone package (Don't roll your eyes at 
+  me--it's freeware.)
+- Removed those `die` horribly statements that everyone is always raving about ;)
+- Made absolutely certain that all associative indexes in arrays were quoted
+- Corrected some spelling errors in languages.php (between v0.34b and v0.35b)
+- Trimmed newlines before inserting ip-to-country data (based on suggestion from
+  Vincent Grouls <http://vincentg.sytes.net/>)
+
+v0.34b | 04.06.27
+- Updated language to display human readable language/country pairs instead of
+  obscure browser abbreviations (will need to update languages.php occasionally)
+
+v0.33b | 04.06.27
+- Displays the past seven days total hits
+- Configurable option to condense browser versions into a single percentage (plan 
+  to expand on this feature later)
+- Referrers now have a title attribute containing the resource they most recently 
+  linked to (and vice versa)
+- The site's root directory now has a configurable display property (displayed 
+  "/" previously) for use in referrer and resource lists
+- Added configurable site name for the `<title>` and `<h1>` on the display page
+- Added a redirect to the site home page if ShortStat is accessed from an external 
+  link (to deter referrer spammers)
+- Records your visitor's language settings (might expand on this feature later)
+- Includes ShortStat archiving suggestions and an additional script to clear all 
+  hits received before the current month (done manually for now)
+- Created updater from v0.3b
+- Changed all internal file dates to YY.MM.DD
+
+v0.3b | 03.09.04
+-Quoted associative arrays to avoid conflicts on some set-ups
+-Took better care with variable naming, Those that aren't prefixed with "SI_" will 
+ be phased out at a later date in favor of web-based configuration
+-Added search engine keyword tracking. Currently supports Google, Yahoo, MSN & AOL
+-Added optional IP-to-Country mapping using the IP-to-Country Database provided by 
+ WebHosting.Info (http://ip-to-country.webhosting.info/)
+-Built in support for hosting ShortStat on a different subdomain
+-Created updater for users upgrading from v.02b
+-Further refined the presentation
+
+v0.2b | 03.04.04
+-First public release
+-Created installer and instructions
+-Cleaned up presentation
