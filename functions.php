@@ -15,7 +15,7 @@
 function SI_pconnect() {
 	global $SI_db;
 	$horribly = "Could not access the database, please make sure that the appropriate values have been added to the configuration file included in this package.";
-	if (@mysql_pconnect($SI_db['server'],$SI_db['username'],$SI_db['password'])) {
+	if (@mysqli_connect($SI_db['server'],$SI_db['username'],$SI_db['password'])) {
 		if (@!mysql_select_db($SI_db['database'])) {
 			// die($horribly);
 			}
