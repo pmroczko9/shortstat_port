@@ -26,6 +26,9 @@ function SI_pconnect(): mysqli {
 	else {
 		// die($horribly);
 		}
+	//https://www.php.net/manual/en/mysqli.query.php
+	// $mysli = new mysqli("localhost", "my_user", "my_password", "world");
+	// return $mysql;
 	}
 
 
@@ -33,7 +36,7 @@ function SI_pconnect(): mysqli {
  SI_isIPtoCountryInstalled()
  Confirms the existance of the IP-to-Country database
  ******************************************************************************/
-function SI_isIPtoCountryInstalled() {
+function SI_isIPtoCountryInstalled($my_mysqli) {
 	global $SI_tables;
 	$query="SELECT * FROM $SI_tables[countries] LIMIT 0,1";
 	return ($result = mysql_query($query))?mysql_num_rows($result):0;
