@@ -14,18 +14,19 @@
  ******************************************************************************/
 function SI_pconnect(): mysqli {
 	global $SI_db;
-	mysqli func_obj;
 	$horribly = "Could not access the database, please make sure that the appropriate values have been added to the configuration file included in this package.";
-	func_obj = @mysqli_connect($SI_db['server'],$SI_db['username'],$SI_db['password']);
-	if (func_obj) {
-		if (@!mysql_select_db($SI_db['database'])) {
+	$func_obj = @mysqli_connect($SI_db['server'],$SI_db['username'],$SI_db['password']);
+	/* check connection */
+	if (mysqli_connect_errno()) {
+    		printf("Connect failed: %s\n", mysqli_connect_error());
+    		exit();
+	}
+	
+	if (@!mysql_select_db($SI_db['database'])) {
 			// die($horribly);
 			}
-		else return func_obj;
 		}
-	else {
-		// die($horribly);
-		}
+	return $func_obj;
 	}
 
 
@@ -468,11 +469,11 @@ function SI_getTotalHits() {
 			}
 		}
 	}
-function SI_getFirstHit() {
+function SI_getFirstHit($func_obj) {
 	global $SI_tables;
 	$query = "SELECT dt FROM $SI_tables[stats] ORDER BY dt ASC LIMIT 0,1";
-	if ($result = mysql_query($query)) {
-		if ($r = mysql_fetch_array($result)) {
+	if ($result = mysqli_query($func_obj,$query)) {
+		if ($r = mysqli_fetch_array($result)) {
 			return $r['dt'];
 			}
 		}
