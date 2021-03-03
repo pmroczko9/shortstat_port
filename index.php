@@ -18,7 +18,7 @@ if (!empty($_SERVER['HTTP_REFERER'])) { header("Location:http://$_SERVER[SERVER_
 include_once("configuration.php");
 include_once("functions.php");
 
-msqli main_obj = SI_pconnect();
+$main_obj = SI_pconnect();
 echo "<!-- ShortStat $SI_display[version] -->";
 ?>
 
@@ -44,7 +44,7 @@ echo "<!-- ShortStat $SI_display[version] -->";
 		<h3>Hits <span>Uniques</span></h3>
 		<div><table border="0" cellspacing="0" cellpadding="0">
 			<tr><th>Hits</th><th class="last">Uniques</th></tr>
-			<tr><td colspan="2" class="accent">Since <?php echo gmdate("g:i a j M Y",SI_getFirstHit(main_obj)+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600));?></td></tr>
+			<tr><td colspan="2" class="accent">Since <?php echo gmdate("g:i a j M Y",SI_getFirstHit($main_obj)+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600));?></td></tr>
 			<tr><td><?php echo SI_getTotalHits(); ?></td><td class="last"><?php echo SI_getUniqueHits(); ?></td></tr>
 			<tr><td colspan="2" class="accent">Just Today as of <?php echo gmdate("g:i a j M Y",time()+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600));?></td></tr>
 			<tr><td><?php echo SI_getTodaysHits(); ?></td><td class="last"><?php echo SI_getTodaysUniqueHits(); ?></td></tr>
