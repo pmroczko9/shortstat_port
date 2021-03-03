@@ -21,11 +21,12 @@ function SI_pconnect(): mysqli {
     		printf("Connect failed: %s\n", mysqli_connect_error());
     		exit();
 	}
+	mysqli_select_db($func_obj, $SI_db['database']);
 	
-	if (@!mysql_select_db($SI_db['database'])) {
+	//if (@!mysql_select_db($SI_db['database'])) {
 			// die($horribly);
-			}
-		}
+	//		}
+	//	}
 	return $func_obj;
 	}
 
@@ -460,10 +461,10 @@ function SI_getBrowsers() {
 	return $ul;
 	}
 
-function SI_getTotalHits() {
+function SI_getTotalHits(mysqli $func_obj) {
 	global $SI_tables;
 	$query = "SELECT COUNT(*) AS 'total' FROM $SI_tables[stats]";
-	if ($result = mysql_query($query)) {
+	if ($result = mysqli_query($func_obj,$query)) {
 		if ($count = mysql_fetch_array($result)) {
 			return $count['total'];
 			}
@@ -473,7 +474,8 @@ function SI_getFirstHit($func_obj) {
 	global $SI_tables;
 	$query = "SELECT dt FROM $SI_tables[stats] ORDER BY dt ASC LIMIT 0,1";
 	if ($result = mysqli_query($func_obj,$query)) {
-		if ($r = mysqli_fetch_array($result)) {
+		if ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			mysqli_free_result($result);
 			return $r['dt'];
 			}
 		}
