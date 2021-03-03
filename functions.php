@@ -12,13 +12,16 @@
  ******************************************************************************
  Database Connection
  ******************************************************************************/
-function SI_pconnect() {
+function SI_pconnect(): mysqli {
 	global $SI_db;
+	mysqli func_obj;
 	$horribly = "Could not access the database, please make sure that the appropriate values have been added to the configuration file included in this package.";
-	if (@mysqli_connect($SI_db['server'],$SI_db['username'],$SI_db['password'])) {
+	func_obj = @mysqli_connect($SI_db['server'],$SI_db['username'],$SI_db['password']);
+	if (func_obj) {
 		if (@!mysql_select_db($SI_db['database'])) {
 			// die($horribly);
 			}
+		else return func_obj;
 		}
 	else {
 		// die($horribly);
