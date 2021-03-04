@@ -47,18 +47,18 @@ echo "<!-- ShortStat $SI_display[version] -->";
 			<tr><td colspan="2" class="accent">Since <?php echo gmdate("g:i a j M Y",SI_getFirstHit($main_obj)+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600));?></td></tr>
 			<tr><td><?php echo SI_getTotalHits($main_obj); ?></td><td class="last"><?php echo SI_getUniqueHits($main_obj); ?></td></tr>
 			<tr><td colspan="2" class="accent">Just Today as of <?php echo gmdate("g:i a j M Y",time()+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600));?></td></tr>
-			<tr><td><?php echo SI_getTodaysHits($main_obj); ?></td><td class="last"><?php echo SI_getTodaysUniqueHits(); ?></td></tr>
+			<tr><td><?php echo SI_getTodaysHits($main_obj); ?></td><td class="last"><?php echo SI_getTodaysUniqueHits($main_obj); ?></td></tr>
 		</table></div>
 	</div>
 	
 	<div class="module waccents">
 		<h3>Hits in the last week</h3>
-		<div><?php echo SI_getWeeksHits(); ?></div>
+		<div><?php echo SI_getWeeksHits($main_obj); ?></div>
 	</div>
 	
 	<div class="module">
 		<h3>Platform <span>%</span></h3>
-		<div><?php echo SI_getPlatforms(); ?></div>
+		<div><?php echo SI_getPlatforms($main_obj); ?></div>
 	</div>
 </div> <!-- CLOSE COLUMN -->
 
