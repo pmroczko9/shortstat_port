@@ -412,18 +412,19 @@ function SI_getResources() {
 	}
 
 
-function SI_getPlatforms() {
+function SI_getPlatforms($func_obj) {
 	global $SI_tables;
 	$th = SI_getTotalHits();
 	$query = "SELECT platform, COUNT(platform) AS 'total' 
 			  FROM $SI_tables[stats]
 			  GROUP BY platform
 			  ORDER BY total DESC";
-	if ($result = mysql_query($query)) {
+	if ($result = mysqli_query($func_obj,$query)) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Platform</th><th class=\"last\">%</th></tr>\n";
-		while ($r = mysql_fetch_array($result)) {
-			$ul .= "\t<tr><td>$r[platform]</td><td class=\"last\">".number_format(($r['total']/$th)*100)."%</td></tr>\n";
+		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			$ul .= "\t<tr><td>$r['platform']</td><td class=\"last\">".number_format(($r['total']/$th)*100)."%</td></tr>\n";
+			mysqli_free_result($result);
 			}
 		$ul .= "</table>";
 		}
@@ -503,13 +504,14 @@ function SI_getTodaysHits($func_obj) {
 		}
 	}
 	
-function SI_getTodaysUniqueHits() {
+function SI_getTodaysUniqueHits($func_obj) {
 	global $SI_tables,$tz_offset;
 	$dt = strtotime(gmdate("j F Y",time()+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600)));
 	$dt = $dt-(3600*2); // The above is off by two hours. Don't know why yet...
 	$query = "SELECT COUNT(DISTINCT remote_ip) AS 'total' FROM $SI_tables[stats] WHERE dt >= $dt";
-	if ($result = mysql_query($query)) {
-		if ($count = mysql_fetch_array($result)) {
+	if ($result = mysqli_query($func_obj,$query)) {
+		if ($count = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			mysqli_free_result($result);
 			return $count['total'];
 			}
 		}
@@ -520,7 +522,7 @@ function SI_getTodaysUniqueHits() {
  Created 04.04.24 v0.4b
  Integrated 04.06.19  v0.31b for Andrei Herasimchuk
  ******************************************************************************/
-function SI_getWeeksHits() {
+function SI_getWeeksHits($func_obj) {
 	global $SI_tables,$tz_offset;
 	
 	$dt = strtotime(gmdate("j F Y",time()+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600)));
@@ -538,9 +540,10 @@ function SI_getWeeksHits() {
 		$dt_start = $dt - ($i * 60 * 60 * 24);
 		$day = ($i)?gmdate("l, j M Y",$dt_stop):"Today, ".gmdate("j M Y",$dt_stop);
 		$query = "SELECT COUNT(*) AS 'total' FROM $SI_tables[stats] WHERE dt > $dt_start AND dt <=$dt_stop";
-		if ($result = mysql_query($query)) {
-			if ($count = mysql_fetch_array($result)) {
-				$tmp .= "\t<tr><td>$day</td><td class=\"last\">$count[total]</td></tr>\n";
+		if ($result = mysqli_query($func_obj,$query)) {
+			if ($count = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+				mysqli_free_result($result);
+				$tmp .= "\t<tr><td>$day</td><td class=\"last\">$count['total']</td></tr>\n";
 				}
 			}
 		}
