@@ -14,19 +14,18 @@
  ******************************************************************************/
 function SI_pconnect(): mysqli {
 	global $SI_db;
-	$horribly = "Could not access the database, please make sure that the appropriate values have been added to the configuration file included in this package.";
+	//$horribly = "Could not access the database, please make sure that the appropriate values have been added to the configuration file included in this package.";
 	$func_obj = @mysqli_connect($SI_db['server'],$SI_db['username'],$SI_db['password']);
 	/* check connection */
 	if (mysqli_connect_errno()) {
     		printf("Connect failed: %s\n", mysqli_connect_error());
     		exit();
-	}
-	mysqli_select_db($func_obj, $SI_db['database']);
-	
-	//if (@!mysql_select_db($SI_db['database'])) {
-			// die($horribly);
-	//		}
-	//	}
+		}
+	/* database select */
+	if (@!mysqli_select_db($func_obj, $SI_db['database'])) {
+		printf("Database: %s select failed!\n", $SI_db['database']);
+		exit();
+		}
 	return $func_obj;
 	}
 
@@ -461,11 +460,12 @@ function SI_getBrowsers() {
 	return $ul;
 	}
 
-function SI_getTotalHits(mysqli $func_obj) {
+function SI_getTotalHits($func_obj) {
 	global $SI_tables;
 	$query = "SELECT COUNT(*) AS 'total' FROM $SI_tables[stats]";
 	if ($result = mysqli_query($func_obj,$query)) {
-		if ($count = mysql_fetch_array($result)) {
+		if ($count = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			mysqli_free_result($result);
 			return $count['total'];
 			}
 		}
@@ -480,22 +480,24 @@ function SI_getFirstHit($func_obj) {
 			}
 		}
 	}
-function SI_getUniqueHits() {
+function SI_getUniqueHits($func_obj) {
 	global $SI_tables;
 	$query = "SELECT COUNT(DISTINCT remote_ip) AS 'total' FROM $SI_tables[stats]";
-	if ($result = mysql_query($query)) {
-		if ($count = mysql_fetch_array($result)) {
+	if ($result = mysqli_query($func_obj,$query)) {
+		if ($count = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			mysqli_free_result($result);
 			return $count['total'];
 			}
 		}
 	}
-function SI_getTodaysHits() {
+function SI_getTodaysHits($func_obj) {
 	global $SI_tables,$tz_offset;
 	$dt = strtotime(gmdate("j F Y",time()+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600)));
 	$dt = $dt-(3600*2); // The above is off by two hours. Don't know why yet...
 	$query = "SELECT COUNT(*) AS 'total' FROM $SI_tables[stats] WHERE dt >= $dt";
-	if ($result = mysql_query($query)) {
-		if ($count = mysql_fetch_array($result)) {
+	if ($result = mysqli_query($func_obj,$query)) {
+		if ($count = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			mysqli_free_result($result);
 			return $count['total'];
 			}
 		}
