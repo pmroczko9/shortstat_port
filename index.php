@@ -45,9 +45,9 @@ echo "<!-- ShortStat $SI_display[version] -->";
 		<div><table border="0" cellspacing="0" cellpadding="0">
 			<tr><th>Hits</th><th class="last">Uniques</th></tr>
 			<tr><td colspan="2" class="accent">Since <?php echo gmdate("g:i a j M Y",SI_getFirstHit($main_obj)+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600));?></td></tr>
-			<tr><td><?php echo SI_getTotalHits(); ?></td><td class="last"><?php echo SI_getUniqueHits(); ?></td></tr>
+			<tr><td><?php echo SI_getTotalHits($main_obj); ?></td><td class="last"><?php echo SI_getUniqueHits($main_obj); ?></td></tr>
 			<tr><td colspan="2" class="accent">Just Today as of <?php echo gmdate("g:i a j M Y",time()+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600));?></td></tr>
-			<tr><td><?php echo SI_getTodaysHits(); ?></td><td class="last"><?php echo SI_getTodaysUniqueHits(); ?></td></tr>
+			<tr><td><?php echo SI_getTodaysHits($main_obj); ?></td><td class="last"><?php echo SI_getTodaysUniqueHits(); ?></td></tr>
 		</table></div>
 	</div>
 	
