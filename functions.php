@@ -424,9 +424,9 @@ function SI_getPlatforms($func_obj) {
 		$ul .= "\t<tr><th>Platform</th><th class=\"last\">%</th></tr>\n";
 		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			var_dump($r);
-			$ul .= "\t<tr><td>$r['platform']</td><td class=\"last\">".number_format(($r['total']/$th)*100)."%</td></tr>\n";
-			mysqli_free_result($result);
+			$ul .= "\t<tr><td>$r[platform]</td><td class=\"last\">".number_format(($r['total']/$th)*100)."%</td></tr>\n";
 			}
+		mysqli_free_result($result);
 		$ul .= "</table>";
 		}
 	return $ul;
