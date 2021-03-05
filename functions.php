@@ -414,7 +414,7 @@ function SI_getResources() {
 
 function SI_getPlatforms($func_obj) {
 	global $SI_tables;
-	$th = SI_getTotalHits();
+	$th = SI_getTotalHits($func_obj);
 	$query = "SELECT platform, COUNT(platform) AS 'total' 
 			  FROM $SI_tables[stats]
 			  GROUP BY platform
@@ -441,7 +441,7 @@ function SI_getPlatforms($func_obj) {
 function SI_getBrowsers() {
 	global $SI_tables,$SI_display;
 	$collapse = ($SI_display['collapse'])?'browser':'browser, version';
-	$th = SI_getTotalHits();
+	$th = SI_getTotalHits($func_obj);
 	$query = "SELECT browser, version, COUNT(*) AS 'total' 
 			  FROM $SI_tables[stats]
 			  WHERE browser != 'Indeterminable' 
@@ -544,7 +544,7 @@ function SI_getWeeksHits($func_obj) {
 		if ($result = mysqli_query($func_obj,$query)) {
 			if ($count = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 				mysqli_free_result($result);
-				$tmp .= "\t<tr><td>$day</td><td class=\"last\">$count['total']</td></tr>\n";
+				$tmp .= "\t<tr><td>$day</td><td class=\"last\">$count[total]</td></tr>\n";
 				}
 			}
 		}
