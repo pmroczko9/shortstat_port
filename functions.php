@@ -423,6 +423,7 @@ function SI_getPlatforms($func_obj) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Platform</th><th class=\"last\">%</th></tr>\n";
 		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+			var_dump($r);
 			$ul .= "\t<tr><td>$r['platform']</td><td class=\"last\">".number_format(($r['total']/$th)*100)."%</td></tr>\n";
 			mysqli_free_result($result);
 			}
