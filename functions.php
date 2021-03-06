@@ -389,7 +389,7 @@ function SI_getCountries() {
  Updated 04.06.19 for Andrei Herasimchuk <designbyfire.com>
  Added requesting referrer as a tooltip
  ******************************************************************************/
-function SI_getResources() {
+function SI_getResources($func_obj) {
 	global $SI_tables, $SI_display;
 	
 	$query = "SELECT resource, referer, COUNT(resource) AS 'requests' 
@@ -400,14 +400,15 @@ function SI_getResources() {
 			  ORDER BY requests DESC 
 			  LIMIT 0,36";
 	
-	if ($result = mysql_query($query)) {
+	if ($result = mysqli_query($func_obj,$query)) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Resource</th><th class=\"last\">Requests</th></tr>\n";
-		while ($r = mysql_fetch_array($result)) {
+		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			$resource = ($r['resource']=="/")?$SI_display["siteshort"]:SI_truncate($r['resource'],24);
 			$referer = (!empty($r['referer']))?$r['referer']:'No referrer';
 			$ul .= "\t<tr><td><a href=\"http://".SI_trimReferer($_SERVER['SERVER_NAME'])."$r[resource]\" title=\"$referer\">".$resource."</a></td><td class=\"last\">$r[requests]</td></tr>\n";
 			}
+		mysqli_free_result($result);
 		$ul .= "</table>";
 		}
 	return $ul;
