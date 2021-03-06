@@ -34,10 +34,10 @@ function SI_pconnect(): mysqli {
  SI_isIPtoCountryInstalled()
  Confirms the existance of the IP-to-Country database
  ******************************************************************************/
-function SI_isIPtoCountryInstalled() {
+function SI_isIPtoCountryInstalled($func_obj) {
 	global $SI_tables;
 	$query="SELECT * FROM $SI_tables[countries] LIMIT 0,1";
-	return ($result = mysql_query($query))?mysql_num_rows($result):0;
+	return ($result = mysqli_query($func_obj, $query))?mysql_num_rows($result):0;
 	}
 /******************************************************************************
  SI_determineCountry()
@@ -279,16 +279,16 @@ function SI_getKeywords($func_obj) {
 			  ORDER BY count DESC
 			  LIMIT 0,36";
 	
-	if ($result = mysql_query($func_obj,$query)) {
+	if ($result = mysqli_query($func_obj,$query)) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Search Strings</th><th class=\"last\">Hits</th></tr>\n";
-		while ($r = mysqli_fetch_array($result, MSQLI_ASSOC)) {
+		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			$ul .= "\t<tr><td>$r[searchterms]</td><td class=\"last\">$r[count]</td></tr>\n";
 			}
 		$ul .= "</table>";
 		mysqli_free_result($result);
 		}
-	return $ul
+	return $ul;
 	}
 
 
@@ -576,13 +576,13 @@ function SI_determineLanguage() {
  Added 04.06.27
  Based on code submitted by Gerhard Schoder <buero-schoder.de>
  ******************************************************************************/
-function SI_getLanguage() {
+function SI_getLanguage($func_obj) {
 	include_once("languages.php");
 	global $SI_tables;
 	
 	$query = "SELECT COUNT(*) AS 'total' FROM $SI_tables[stats] WHERE language != '' AND language != 'empty'";
-	if ($result = mysql_query($query)) {
-		if ($count = mysql_fetch_array($result)) {
+	if ($result = mysqli_query($func_obj,$query)) {
+		if ($count = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			$th = $count['total'];
 			}
 		}
@@ -603,6 +603,7 @@ function SI_getLanguage() {
 			$html .= "\t<tr><td>$lang</td><td class=\"last\">$per%</td></tr>\n";
 			}
 		$html .= "</table>";
+		mysqli_free_result($result);
 		}
 	return $html;
 	}
