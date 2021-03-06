@@ -128,52 +128,52 @@ function SI_sniffKeywords($url) { // $url should be an array created by parse_ur
  ******************************************************************************/
 function SI_parseUserAgent($ua) {
 	$browser['platform']	= "Indeterminable";
-	$browser['browser']		= "Indeterminable";
-	$browser['version']		= "Indeterminable";
+	$browser['browser']	= "Indeterminable";
+	$browser['version']	= "Indeterminable";
 	$browser['majorver']	= "Indeterminable";
 	$browser['minorver']	= "Indeterminable";
 	
 	
 	// Test for platform
-	if (eregi('Win',$ua)) {
+	if (preg_match('/Win/i',$ua)) {
 		$browser['platform'] = "Windows";
 		}
-	else if (eregi('Mac',$ua)) {
+	else if (preg_match('/Mac/i',$ua)) {
 		$browser['platform'] = "Macintosh";
 		}
-	else if (eregi('Linux',$ua)) {
+	else if (preg_match('/Linux/i',$ua)) {
 		$browser['platform'] = "Linux";
 		}
 	
 	
 	// Test for browser type
-	if (eregi('Mozilla/4',$ua) && !eregi('compatible',$ua)) {
+	if (preg_match('Mozilla/4',$ua) && !preg_match('/compatible/i',$ua)) {
 		$browser['browser'] = "Netscape";
-		eregi('Mozilla/([[:digit:]\.]+)',$ua,$b);
+		preg_match('/Mozilla/([[:digit:]\.]+)/i',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Mozilla/5',$ua) || eregi('Gecko',$ua)) {
+	if (preg_match('Mozilla/5',$ua) || preg_match('Gecko',$ua)) {
 		$browser['browser'] = "Mozilla";
-		eregi('rv(:| )([[:digit:]\.]+)',$ua,$b);
+		preg_match('rv(:| )([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[2];
 		}
-	if (eregi('Safari',$ua)) {
+	if (preg_match('Safari',$ua)) {
 		$browser['browser'] = "Safari";
 		$browser['platform'] = "Macintosh";
-		eregi('Safari/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Safari/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		
-		if (eregi('125',$browser['version'])) {
+		if (preg_match('125',$browser['version'])) {
 			$browser['version'] 	= 1.2;
 			$browser['majorver']	= 1;
 			$browser['minorver']	= 2;
 			}
-		else if (eregi('100',$browser['version'])) {
+		else if (preg_match('100',$browser['version'])) {
 			$browser['version'] 	= 1.1;
 			$browser['majorver']	= 1;
 			$browser['minorver']	= 1;
 			}
-		else if (eregi('85',$browser['version'])) {
+		else if (preg_match('85',$browser['version'])) {
 			$browser['version'] 	= 1.0;
 			$browser['majorver']	= 1;
 			$browser['minorver']	= 0;
@@ -182,74 +182,74 @@ function SI_parseUserAgent($ua) {
 			$browser['version'] 	= "Pre-1.0 Beta";
 			}
 		}
-	if (eregi('iCab',$ua)) {
+	if (preg_match('iCab',$ua)) {
 		$browser['browser'] = "iCab";
-		eregi('iCab/([[:digit:]\.]+)',$ua,$b);
+		preg_match('iCab/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Firefox',$ua)) {
+	if (preg_match('Firefox',$ua)) {
 		$browser['browser'] = "Firefox";
-		eregi('Firefox/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Firefox/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Firebird',$ua)) {
+	if (preg_match('Firebird',$ua)) {
 		$browser['browser'] = "Firebird";
-		eregi('Firebird/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Firebird/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Phoenix',$ua)) {
+	if (preg_match('Phoenix',$ua)) {
 		$browser['browser'] = "Phoenix";
-		eregi('Phoenix/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Phoenix/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Camino',$ua)) {
+	if (preg_match('Camino',$ua)) {
 		$browser['browser'] = "Camino";
-		eregi('Camino/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Camino/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Chimera',$ua)) {
+	if (preg_match('Chimera',$ua)) {
 		$browser['browser'] = "Chimera";
-		eregi('Chimera/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Chimera/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Netscape',$ua)) {
+	if (preg_match('Netscape',$ua)) {
 		$browser['browser'] = "Netscape";
-		eregi('Netscape[0-9]?/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Netscape[0-9]?/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('MSIE',$ua)) {
+	if (preg_match('MSIE',$ua)) {
 		$browser['browser'] = "Internet Explorer";
-		eregi('MSIE ([[:digit:]\.]+)',$ua,$b);
+		preg_match('MSIE ([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Opera',$ua)) {
+	if (preg_match('Opera',$ua)) {
 		$browser['browser'] = "Opera";
-		eregi('Opera( |/)([[:digit:]\.]+)',$ua,$b);
+		preg_match('Opera( |/)([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[2];
 		}
-	if (eregi('OmniWeb',$ua)) {
+	if (preg_match('OmniWeb',$ua)) {
 		$browser['browser'] = "OmniWeb";
-		eregi('OmniWeb/([[:digit:]\.]+)',$ua,$b);
+		preg_match('OmniWeb/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Konqueror',$ua)) {
+	if (preg_match('Konqueror',$ua)) {
 		$browser['platform'] = "Linux";
 
 		$browser['browser'] = "Konqueror";
-		eregi('Konqueror/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Konqueror/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Crawl',$ua) || eregi('bot',$ua) || eregi('slurp',$ua) || eregi('spider',$ua)) {
+	if (preg_match('Crawl',$ua) || preg_match('bot',$ua) || preg_match('slurp',$ua) || preg_match('spider',$ua)) {
 		$browser['browser'] = "Crawler/Search Engine";
 		}
-	if (eregi('Lynx',$ua)) {
+	if (preg_match('Lynx',$ua)) {
 		$browser['browser'] = "Lynx";
-		eregi('Lynx/([[:digit:]\.]+)',$ua,$b);
+		preg_match('Lynx/([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
-	if (eregi('Links',$ua)) {
+	if (preg_match('Links',$ua)) {
 		$browser['browser'] = "Links";
-		eregi('\(([[:digit:]\.]+)',$ua,$b);
+		preg_match('\(([[:digit:]\.]+)',$ua,$b);
 		$browser['version'] = $b[1];
 		}
 	
@@ -257,9 +257,9 @@ function SI_parseUserAgent($ua) {
 	// Determine browser versions
 	if ($browser['browser']!='Safari' && $browser['browser'] != "Indeterminable" && $browser['browser'] != "Crawler/Search Engine" && $browser['version'] != "Indeterminable") {
 		// Make sure we have at least .0 for a minor version
-		$browser['version'] = (!eregi('\.',$browser['version']))?$browser['version'].".0":$browser['version'];
+		$browser['version'] = (!preg_match('\.',$browser['version']))?$browser['version'].".0":$browser['version'];
 		
-		eregi('^([0-9]*).(.*)$',$browser['version'],$v);
+		preg_match('^([0-9]*).(.*)$',$browser['version'],$v);
 		$browser['majorver'] = $v[1];
 		$browser['minorver'] = $v[2];
 		}
@@ -296,7 +296,7 @@ function SI_getKeywords() {
  Updated 04.06.19 for Andrei Herasimchuk <designbyfire.com>
  Added requested resource as a tooltip
  ******************************************************************************/
-function SI_getReferers() {
+function SI_getReferers($func_obj) {
 	global $SI_tables,$SI_display,$tz_offset,$_SERVER;
 	
 	$query = "SELECT referer, resource, dt 
@@ -306,16 +306,17 @@ function SI_getReferers() {
 			  ORDER BY dt DESC 
 			  LIMIT 0,36";
 			  
-	if ($result = mysql_query($query)) {
+	if ($result = mysqli_query($func_obj,$query)) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Recent Referrers</th><th class=\"last\">When</th></tr>\n";
-		while ($r = mysql_fetch_array($result)) {
+		while ($r = mysqli_fetch_array($result,MYSQLI_ASSOC)) {
 			$url = parse_url($r['referer']);
 			
 			$when = ($r['dt'] >= strtotime(date("j F Y",time())))?gmdate("g:i a",$r['dt']+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600)):gmdate("M j",$r['dt']+(((gmdate('I'))?($tz_offset+1):$tz_offset)*3600));
 			
 			$resource = ($r['resource']=="/")?$SI_display["siteshort"]:$r['resource'];
 			$ul .= "\t<tr><td><a href=\"$r[referer]\" title=\"$resource\" rel=\"nofollow\">".SI_trimReferer($url['host'])."</a></td><td class=\"last\">$when</td></tr>\n";
+			mysqli_free_result($result);
 			}
 		$ul .= "</table>";
 		}
@@ -610,8 +611,8 @@ function SI_truncate($var, $len = 120) {
 	else { return substr ($var, 0, $len) . "..."; }
 	}
 function SI_trimReferer($r) {
-	$r = eregi_replace("http://","",$r);
-	$r = eregi_replace("^www.","",$r);
+	$r = preg_replace("http://","",$r);
+	$r = preg_replace("^www.","",$r);
 	$r = SI_truncate($r,36);
 	
 	return $r;
