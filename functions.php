@@ -424,7 +424,7 @@ function SI_getPlatforms($func_obj) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Platform</th><th class=\"last\">%</th></tr>\n";
 		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-			var_dump($r);
+			//var_dump($r);
 			$ul .= "\t<tr><td>$r[platform]</td><td class=\"last\">".number_format(($r['total']/$th)*100)."%</td></tr>\n";
 			}
 		mysqli_free_result($result);
@@ -439,7 +439,7 @@ function SI_getPlatforms($func_obj) {
  Removed distinguishing between browser version
  Will develop better approach for v4
  ******************************************************************************/
-function SI_getBrowsers() {
+function SI_getBrowsers($func_obj) {
 	global $SI_tables,$SI_display;
 	$collapse = ($SI_display['collapse'])?'browser':'browser, version';
 	$th = SI_getTotalHits($func_obj);
@@ -448,10 +448,10 @@ function SI_getBrowsers() {
 			  WHERE browser != 'Indeterminable' 
 			  GROUP BY $collapse
 			  ORDER BY total DESC";
-	if ($result = mysql_query($query)) {
+	if ($result = mysqli_query($func_obj,$query)) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Browser</th><th>Version</th><th class=\"last\">%</th></tr>\n";
-		while ($r = mysql_fetch_array($result)) {
+		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			$p = number_format(($r['total']/$th)*100);
 			// $p = ($p==0)?"&lt;1":$p;
 			if ($p>=1) {
