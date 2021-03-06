@@ -611,8 +611,8 @@ function SI_truncate($var, $len = 120) {
 	else { return substr ($var, 0, $len) . "..."; }
 	}
 function SI_trimReferer($r) {
-	$r = preg_replace("http://","",$r);
-	$r = preg_replace("^www.","",$r);
+	$r = preg_replace("~https?://~","",$r);
+	$r = preg_replace("^www.^","",$r);
 	$r = SI_truncate($r,36);
 	
 	return $r;
