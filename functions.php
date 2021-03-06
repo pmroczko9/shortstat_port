@@ -316,9 +316,9 @@ function SI_getReferers($func_obj) {
 			
 			$resource = ($r['resource']=="/")?$SI_display["siteshort"]:$r['resource'];
 			$ul .= "\t<tr><td><a href=\"$r[referer]\" title=\"$resource\" rel=\"nofollow\">".SI_trimReferer($url['host'])."</a></td><td class=\"last\">$when</td></tr>\n";
-			mysqli_free_result($result);
 			}
 		$ul .= "</table>";
+		mysqli_free_result($result);
 		}
 	return $ul;
 	}
@@ -330,7 +330,7 @@ function SI_getReferers($func_obj) {
  Updated 04.06.19 for Andrei Herasimchuk <designbyfire.com>
  Added requested resource as a tooltip
  ******************************************************************************/
-function SI_getDomains() {
+function SI_getDomains($func_obj) {
 	global $SI_tables,$SI_display,$_SERVER;
 	
 	$query = "SELECT domain, referer, resource, COUNT(domain) AS 'total' 
@@ -340,11 +340,11 @@ function SI_getDomains() {
 			  GROUP BY domain 
 			  ORDER BY total DESC, dt DESC";
 	
-	if ($result = mysql_query($query)) {
+	if ($result = mysqli_query($func_obj,$query)) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Repeat Referrers</th><th class=\"last\">Hits</th></tr>\n";
 		$i=0;
-		while ($r = mysql_fetch_array($result)) {
+		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			if ($i < 36) {
 				$resource = ($r['resource']=="/")?$SI_display["siteshort"]:$r['resource'];
 				$ul .= "\t<tr><td><a href=\"$r[referer]\" title=\"$resource\" rel=\"nofollow\">$r[domain]</a></td><td class=\"last\">$r[total]</td></tr>\n";
@@ -352,6 +352,7 @@ function SI_getDomains() {
 				}
 			}
 		$ul .= "</table>";
+		mysqli_free_result($result);
 		}
 	return $ul;
 	}
