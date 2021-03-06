@@ -272,22 +272,23 @@ function SI_parseUserAgent($ua) {
 	return $browser;
 	}
 
-function SI_getKeywords() {
+function SI_getKeywords($func_obj) {
 	global $SI_tables;
 	$query = "SELECT searchterms, count
 			  FROM $SI_tables[searchterms]
 			  ORDER BY count DESC
 			  LIMIT 0,36";
 	
-	if ($result = mysql_query($query)) {
+	if ($result = mysql_query($func_obj,$query)) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Search Strings</th><th class=\"last\">Hits</th></tr>\n";
-		while ($r = mysql_fetch_array($result)) {
+		while ($r = mysqli_fetch_array($result, MSQLI_ASSOC)) {
 			$ul .= "\t<tr><td>$r[searchterms]</td><td class=\"last\">$r[count]</td></tr>\n";
 			}
 		$ul .= "</table>";
+		mysqli_free_result($result);
 		}
-	return $ul;
+	return $ul
 	}
 
 
