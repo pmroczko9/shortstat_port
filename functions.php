@@ -581,7 +581,7 @@ function SI_getLanguage($func_obj) {
 	global $SI_tables;
 	
 	$query = "SELECT COUNT(*) AS 'total' FROM $SI_tables[stats] WHERE language != '' AND language != 'empty'";
-	if ($result = mysqli_query($func_obj,$query)) {
+	if ($result = mysqli_query($func_obj, $query)) {
 		if ($count = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			$th = $count['total'];
 			}
@@ -592,10 +592,10 @@ function SI_getLanguage($func_obj) {
 			  language != 'empty' 
 			  GROUP BY language
 			  ORDER BY total DESC";
-	if ($result = mysql_query($query)) {
+	if ($result = mysqli_query($func_obj, $query)) {
 		$html  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$html .= "\t<tr><th>Language</th><th class=\"last\">%</th></tr>\n";
-		while ($r = mysql_fetch_array($result)) {
+		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			$l = $r['language'];
 			$lang = (isset($SI_languages[$l]))?$SI_languages[$l]:$l;
 			$per = number_format(($r['total']/$th)*100);
