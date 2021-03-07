@@ -64,41 +64,41 @@ echo "<!-- ShortStat $SI_display[version] -->";
 
 <div class="module">
 	<h3>Browser <span>%</span></h3>
-	<div><?php echo SI_getBrowsers(); ?></div>
+	<div><?php echo SI_getBrowsers($main_obj); ?></div>
 </div>
 
 <div class="module">
 	<h3>Recent Referrers <span>When</span></h3>
-	<div><?php echo SI_getReferers(); ?></div>
+	<div><?php echo SI_getReferers($main_obj); ?></div>
 </div>
 
 <div class="module">
 	<h3>Repeat Referrers <span>Hits</span></h3>
-	<div><?php echo SI_getDomains(); ?></div>
+	<div><?php echo SI_getDomains($main_obj); ?></div>
 </div>
 
 <div class="module">
 	<h3>Resources <span>Hits</span></h3>
-	<div><?php echo SI_getResources(); ?></div>
+	<div><?php echo SI_getResources($main_obj); ?></div>
 </div>
 
 <div class="module">
 	<h3>Search Strings <span>Hits</span></h3>
-	<div><?php echo SI_getKeywords(); ?></div>
+	<div><?php echo SI_getKeywords($main_obj); ?></div>
 </div>
 
-<?php if (SI_isIPtoCountryInstalled()) { ?>
+<?php if (SI_isIPtoCountryInstalled($main_obj)) { ?>
 <div class="module">
 	<h3>Countries <span>Visits</span></h3>
-	<div><?php echo SI_getCountries(); ?></div>
+	<div><?php echo SI_getCountries($main_obj); ?></div>
 </div>
 <?php }?>
 
 <div class="module">
 	<h3>Languages <span>%</span></h3>
-	<div><?php echo SI_getLanguage(); ?></div>
+	<div><?php echo SI_getLanguage($main_obj); ?></div>
 </div>
 
-<div id="donotremove"><?php if (SI_isIPtoCountryInstalled()) { ?><br />This application uses the <a href="http://ip-to-country.webhosting.info">IP-to-Country Database</a> provided by <a href="http://www.webhosting.info">WebHosting.Info</a><?php } ?></div>
+<div id="donotremove"><?php if (SI_isIPtoCountryInstalled($main_obj)) { ?><br />This application uses the <a href="http://ip-to-country.webhosting.info">IP-to-Country Database</a> provided by <a href="http://www.webhosting.info">WebHosting.Info</a><?php } ?></div>
 </body>
 </html>
