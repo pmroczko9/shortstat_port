@@ -95,7 +95,7 @@ function SI_determineCountry($ip) {
     	$jsonData = json_decode(curl_exec($curlSession));
     	curl_close($curlSession);
 
-    	return $jsonData->geoplugin_countryCode;
+    	return $jsonData->geoplugin_countryName;
 	}
 
 /******************************************************************************
