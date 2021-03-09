@@ -394,7 +394,7 @@ function SI_getDomains($func_obj) {
 	}
 
 
-function SI_getCountries() {
+function SI_getCountries($func_obj) {
 	global $SI_tables,$_SERVER;
 	
 	$query = "SELECT country, COUNT(country) AS 'total' 
@@ -403,17 +403,18 @@ function SI_getCountries() {
 			  GROUP BY country 
 			  ORDER BY total DESC";
 	
-	if ($result = mysql_query($query)) {
+	if ($result = mysqli_query($func_obj, $query)) {
 		$ul  = "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n";
 		$ul .= "\t<tr><th>Country</th><th class=\"last\">Visits</th></tr>\n";
 		$i=0;
-		while ($r = mysql_fetch_array($result)) {
+		while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			if ($i < 36) {
-				$url = parse_url($r['referer']);
+				//$url = parse_url($r['referer']);
 				$ul .= "\t<tr><td>$r[country]</td><td class=\"last\">$r[total]</td></tr>\n";
 				$i++;
 				}
 			}
+		mysqli_free_result($result);
 		$ul .= "</table>";
 		}
 	return $ul;
