@@ -87,12 +87,10 @@ echo "<!-- ShortStat $SI_display[version] -->";
 	<div><?php echo SI_getKeywords($main_obj); ?></div>
 </div>
 
-<?php if (SI_isIPtoCountryInstalled($main_obj)) { ?>
 <div class="module">
 	<h3>Countries <span>Visits</span></h3>
 	<div><?php echo SI_getCountries($main_obj); ?></div>
 </div>
-<?php }?>
 
 <div class="module">
 	<h3>Languages <span>%</span></h3>
