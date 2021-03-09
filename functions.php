@@ -39,6 +39,32 @@ function SI_isIPtoCountryInstalled($func_obj) {
 	$query="SELECT * FROM $SI_tables[countries] LIMIT 0,1";
 	return ($result = mysqli_query($func_obj, $query))?mysql_num_rows($result):0;
 	}
+
+/******************************************************************************
+get_client_ip_server()
+Evaluates client's IP address
+Taken from https://stackoverflow.com/questions/12553160/getting-visitors-country-from-their-ip
+******************************************************************************/
+function get_client_ip_server() {
+  $ipaddress = '';
+if (isset($_SERVER['HTTP_CLIENT_IP']))
+  $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+  $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+else if(isset($_SERVER['HTTP_X_FORWARDED']))
+  $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+  $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+else if(isset($_SERVER['HTTP_FORWARDED']))
+  $ipaddress = $_SERVER['HTTP_FORWARDED'];
+else if(isset($_SERVER['REMOTE_ADDR']))
+  $ipaddress = $_SERVER['REMOTE_ADDR'];
+else
+  $ipaddress = 'UNKNOWN';
+
+  return $ipaddress;
+}
+
 /******************************************************************************
  SI_determineCountry()
  Determines the viewers country based on their ip address.
@@ -47,20 +73,29 @@ function SI_isIPtoCountryInstalled($func_obj) {
  (https://www.geoplugin.net), available from 
  https://www.geoplugin.com.
  ******************************************************************************/
-function SI_determineCountry($func_obj, $ip) {
-	if (!SI_isIPtoCountryInstalled($func_obj)) return '';
+function SI_determineCountry($ip) {
+	//if (!SI_isIPtoCountryInstalled($func_obj)) return '';
 	
-	global $SI_tables;
+	//global $SI_tables;
 	$ip = sprintf("%u",ip2long($ip));
 	
-	$query = "SELECT country_name FROM $SI_tables[countries]
-			  WHERE ip_from <= $ip AND
-			  ip_to >= $ip";
-	if ($result = mysql_query($query)) {
-		if ($r = mysql_fetch_array($result)) {
-			return trim(ucwords(preg_replace("/([A-Z\xC0-\xDF])/e","chr(ord('\\1')+32)",$r['country_name'])));
-			}
-		}
+	//$query = "SELECT country_name FROM $SI_tables[countries]
+	//		  WHERE ip_from <= $ip AND
+	//		  ip_to >= $ip";
+	//if ($result = mysql_query($query)) {
+	//	if ($r = mysql_fetch_array($result)) {
+	//		return trim(ucwords(preg_replace("/([A-Z\xC0-\xDF])/e","chr(ord('\\1')+32)",$r['country_name'])));
+	//		}
+	//	}
+	$curlSession = curl_init();
+    	curl_setopt($curlSession, CURLOPT_URL, 'http://www.geoplugin.net/json.gp?ip='.$ip);
+    	curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
+	curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
+
+    	$jsonData = json_decode(curl_exec($curlSession));
+    	curl_close($curlSession);
+
+    	return $jsonData->geoplugin_countryCode;
 	}
 
 /******************************************************************************
