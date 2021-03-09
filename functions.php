@@ -43,12 +43,12 @@ function SI_isIPtoCountryInstalled($func_obj) {
  SI_determineCountry()
  Determines the viewers country based on their ip address.
  
- This function uses the IP-to-Country Database provided by WebHosting.Info 
- (http://www.webhosting.info), available from 
- http://ip-to-country.webhosting.info.
+ This function uses the IP-to-Country Database provided by geoplugin.net 
+ (https://www.geoplugin.net), available from 
+ https://www.geoplugin.com.
  ******************************************************************************/
-function SI_determineCountry($ip) {
-	if (!SI_isIPtoCountryInstalled()) return '';
+function SI_determineCountry($func_obj, $ip) {
+	if (!SI_isIPtoCountryInstalled($func_obj)) return '';
 	
 	global $SI_tables;
 	$ip = sprintf("%u",ip2long($ip));
