@@ -18,14 +18,14 @@ include_once("configuration.php");
 include_once("functions.php");
 
 if ($shortstat) {
-	SI_pconnect();
+	$obj_main = SI_pconnect();
 	
-	$ip		= $_SERVER['REMOTE_ADDR'];
+	$ip		= get_client_ip_server();
 	$cntry	= SI_determineCountry($ip);
 	$lang	= SI_determineLanguage();
 	$ref	= $_SERVER['HTTP_REFERER'];
 	$url 	= parse_url($ref);
-	$domain	= eregi_replace("^www.","",$url['host']);
+	$domain	= pregi_replace("/www./i","",$url['host']);
 	$res	= $_SERVER['REQUEST_URI'];
 	$ua		= $_SERVER['HTTP_USER_AGENT'];
 	$br		= SI_parseUserAgent($ua);
@@ -35,6 +35,6 @@ if ($shortstat) {
 	
 	$query = "INSERT INTO $SI_tables[stats] (remote_ip,country,language,domain,referer,resource,user_agent,platform,browser,version,dt) 
 			  VALUES ('$ip','$cntry','$lang','$domain','$ref','$res','$ua','$br[platform]','$br[browser]','$br[version]',$dt)";
-	@mysql_query($query);
+	@mysqli_query($obj_main,$query);
 	}
 ?>
