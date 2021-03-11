@@ -17,9 +17,22 @@
 include_once("configuration.php");
 include_once("functions.php");
 
-SI_pconnect();
+function inlineCountry($ip){
+	$curlSession = curl_init();
+    	curl_setopt($curlSession, CURLOPT_URL, 'http://www.geoplugin.net/json.gp?ip='.$ip);
+    	
+	curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
 
-if (!isset($match_existing)) {
+    	$jsonData = json_decode(curl_exec($curlSession));
+    	curl_close($curlSession);
+
+    	return $jsonData->geoplugin_countryName;
+
+}
+
+$main_obj = SI_pconnect();
+
+/*if (!isset($match_existing)) {
 	// First we see if this database has already been installed
 	if (@mysql_query("SELECT * FROM $SI_tables[countries]")) { 
 		echo "<p>The IP-to-Country table has already been created. This file and \"_ip-to-country.txt\" should be removed from your server 
@@ -73,21 +86,21 @@ if (!isset($match_existing)) {
 		}
 	}
 else {
-	if (@mysql_query("SELECT * FROM $SI_tables[countries]")) {
+	if (@mysql_query("SELECT * FROM $SI_tables[countries]")) {*/
 		echo "<p>Mapping existing IPs to countries.</p>";
 		// Match existing ips to countries
-		$query = "SELECT id,remote_ip FROM $SI_tables[stats] WHERE country=''";
-		if ($result = mysql_query($query)) {
-			while ($r = mysql_fetch_array($result)) {
-				$country = SI_determineCountry($r['remote_ip']);
+		$query = "SELECT id,remote_ip FROM $SI_tables[stats] LIMIT 10000";
+		if ($result = mysqli_query($main_obj,$query)) {
+			while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+				$country = inlineCountry($r['remote_ip']);
 				$query = "UPDATE $SI_tables[stats] SET country='$country' WHERE id=$r[id]";
-				mysql_query($query);
+				mysqli_query($main_obj,$query);
 				}
 			}
 		echo "<p>Existing IPs mapped to appropriate country. This file and \"_ip-to-country.txt\" should be removed from your server.</p>";
-		}
+	/*	}
 	else {
 		echo "<p>The IP-to-Country table does not exist. <a href=\"$PHP_SELF\">Install the IP-to-Country plug-in.</a></p>";
 		}
-	}
+	}*/
 ?>
