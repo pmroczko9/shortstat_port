@@ -77,7 +77,7 @@ function SI_determineCountry($ip) {
 	//if (!SI_isIPtoCountryInstalled($func_obj)) return '';
 	
 	//global $SI_tables;
-	$ip = sprintf("%u",ip2long($ip));
+	//$ip = sprintf("%u",ip2long($ip)); This thing is bugging this function!
 	
 	//$query = "SELECT country_name FROM $SI_tables[countries]
 	//		  WHERE ip_from <= $ip AND
@@ -89,7 +89,7 @@ function SI_determineCountry($ip) {
 	//	}
 	$curlSession = curl_init();
     	curl_setopt($curlSession, CURLOPT_URL, 'http://www.geoplugin.net/json.gp?ip='.$ip);
-    	curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
+    	//curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true); Doesn't work any more since PHP 5.1.3
 	curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
 
     	$jsonData = json_decode(curl_exec($curlSession));
