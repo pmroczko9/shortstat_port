@@ -17,19 +17,6 @@
 include_once("configuration.php");
 include_once("functions.php");
 
-function inlineCountry($ip){
-	$curlSession = curl_init();
-    	curl_setopt($curlSession, CURLOPT_URL, 'http://www.geoplugin.net/json.gp?ip='.$ip);
-    	
-	curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
-
-    	$jsonData = json_decode(curl_exec($curlSession));
-    	curl_close($curlSession);
-
-    	return $jsonData->geoplugin_countryName;
-
-}
-
 $main_obj = SI_pconnect();
 
 /*if (!isset($match_existing)) {
@@ -92,10 +79,11 @@ else {
 		$query = "SELECT id,remote_ip FROM $SI_tables[stats] LIMIT 10000";
 		if ($result = mysqli_query($main_obj,$query)) {
 			while ($r = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-				$country = inlineCountry($r['remote_ip']);
+				$country = SI_determineCountry($r['remote_ip']);
 				$query = "UPDATE $SI_tables[stats] SET country='$country' WHERE id=$r[id]";
 				mysqli_query($main_obj,$query);
 				}
+			mysqli_free_result($result);
 			}
 		echo "<p>Existing IPs mapped to appropriate country. This file and \"_ip-to-country.txt\" should be removed from your server.</p>";
 	/*	}
