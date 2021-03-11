@@ -14,22 +14,34 @@
  on, from homepages to secret gardens. It will record information like referrer,
  ip address, the resource being accessed as well as browser and platform.
  ******************************************************************************/
+function inlineCountry($ip){
+	$curlSession = curl_init();
+    	curl_setopt($curlSession, CURLOPT_URL, 'http://www.geoplugin.net/json.gp?ip='.$ip);
+    	
+	curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
+
+    	$jsonData = json_decode(curl_exec($curlSession));
+    	curl_close($curlSession);
+
+    	return $jsonData->geoplugin_countryName;
+}
+
 include_once("configuration.php");
 include_once("functions.php");
 
 if ($shortstat) {
 	$obj_main = SI_pconnect();
 	
-	$ip		= get_client_ip_server();
-	$cntry	= SI_determineCountry($ip);
+	$ip	= get_client_ip_server();
+	$cntry	= inlineCountry($ip);
 	$lang	= SI_determineLanguage();
 	$ref	= $_SERVER['HTTP_REFERER'];
 	$url 	= parse_url($ref);
 	$domain	= pregi_replace("/www./i","",$url['host']);
 	$res	= $_SERVER['REQUEST_URI'];
-	$ua		= $_SERVER['HTTP_USER_AGENT'];
-	$br		= SI_parseUserAgent($ua);
-	$dt		= time();
+	$ua	= $_SERVER['HTTP_USER_AGENT'];
+	$br	= SI_parseUserAgent($ua);
+	$dt	= time();
 	
 	SI_sniffKeywords($url);
 	
